@@ -69,6 +69,7 @@ function Chat({ user, onLogout }) {
         user_id: user.id,
         user_name: user.name
       });
+
       setMessages(prev => [...prev, {
         type: 'bot',
         content: res.data.answer,
@@ -164,12 +165,15 @@ function Chat({ user, onLogout }) {
           <button className={`nav-item ${activeTab === 'chat' ? 'active' : ''}`} onClick={() => handleTabChange('chat')}>
             💬 Chat
           </button>
+
           <button className={`nav-item ${activeTab === 'history' ? 'active' : ''}`} onClick={() => handleTabChange('history')}>
             🕐 History
           </button>
+
           <button className={`nav-item ${activeTab === 'papers' ? 'active' : ''}`} onClick={() => handleTabChange('papers')}>
             📄 Documents ({papers.length})
           </button>
+
           <button className={`nav-item ${activeTab === 'upload' ? 'active' : ''}`} onClick={() => handleTabChange('upload')}>
             ⬆️ Upload PDF
           </button>
@@ -186,15 +190,26 @@ function Chat({ user, onLogout }) {
               {messages.map((msg, i) => (
                 <div key={i} className={`message ${msg.type}`}>
                   {msg.type === 'bot' && <div className="bot-avatar">🤖</div>}
+
                   <div className="message-content">
                     <div className="message-text">{msg.content}</div>
+
                     {msg.sourceDetails && msg.sourceDetails.length > 0 && (
                       <div className="source-table">
-                        <div className="source-table-header"><span>📎 References</span></div>
+                        <div className="source-table-header">
+                          <span>📎 References</span>
+                        </div>
+
                         <table>
                           <thead>
-                            <tr><th>#</th><th>Document</th><th>Page</th><th>Preview</th></tr>
+                            <tr>
+                              <th>#</th>
+                              <th>Document</th>
+                              <th>Page</th>
+                              <th>Preview</th>
+                            </tr>
                           </thead>
+
                           <tbody>
                             {msg.sourceDetails.map((s, j) => (
                               <tr key={j}>
@@ -222,13 +237,16 @@ function Chat({ user, onLogout }) {
                   </div>
                 </div>
               )}
+
               <div ref={messagesEndRef} />
             </div>
 
             {messages.length === 1 && (
               <div className="examples">
                 {exampleQuestions.map((q, i) => (
-                  <button key={i} className="example-btn" onClick={() => setQuestion(q)}>{q}</button>
+                  <button key={i} className="example-btn" onClick={() => setQuestion(q)}>
+                    {q}
+                  </button>
                 ))}
               </div>
             )}
@@ -242,6 +260,7 @@ function Chat({ user, onLogout }) {
                 disabled={loading}
                 autoFocus
               />
+
               <button type="submit" disabled={loading || !question.trim()}>
                 {loading ? '...' : '→'}
               </button>
@@ -252,6 +271,7 @@ function Chat({ user, onLogout }) {
         {activeTab === 'history' && (
           <div className="tab-content">
             <h2>Your Question History</h2>
+
             {history.length === 0 ? (
               <div className="empty-state">No questions yet. Start chatting!</div>
             ) : (
@@ -260,8 +280,10 @@ function Chat({ user, onLogout }) {
                   <div key={i} className="history-item">
                     <div className="history-question">Q: {item.question}</div>
                     <div className="history-answer">A: {item.answer}</div>
+
                     <div className="history-meta">
                       {new Date(item.created_at).toLocaleString()}
+
                       {item.sources && item.sources.map((s, j) => (
                         <span key={j} className="source-tag">{s}</span>
                       ))}
@@ -276,6 +298,7 @@ function Chat({ user, onLogout }) {
         {activeTab === 'papers' && (
           <div className="tab-content">
             <h2>Indexed Documents</h2>
+
             <div className="papers-grid">
               {papers.map((paper, i) => (
                 <div key={i} className="paper-card">
@@ -290,8 +313,23 @@ function Chat({ user, onLogout }) {
         {activeTab === 'upload' && (
           <div className="tab-content">
             <h2>Upload New Document</h2>
-            <p style={{color: '#888', fontSize: '14px', marginBottom: '24px'}}>
+
+            <p style={{color: '#888', fontSize: '14px', marginBottom: '12px'}}>
               Upload a PDF and it will be automatically indexed and searchable.
+            </p>
+
+            <p style={{
+              color: '#aaa',
+              fontSize: '13px',
+              marginBottom: '24px',
+              lineHeight: '1.5',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              background: 'rgba(127,119,221,0.08)',
+              border: '1px solid rgba(127,119,221,0.2)'
+            }}>
+              📌 <strong>For reliable indexing:</strong> please upload standard text-based PDFs.
+              Very large, image-heavy, or complex PDFs may exceed the available processing memory.
             </p>
 
             <form onSubmit={handleUpload} style={{maxWidth: '500px'}}>
@@ -304,6 +342,7 @@ function Chat({ user, onLogout }) {
                 background: 'rgba(127,119,221,0.05)'
               }}>
                 <div style={{fontSize: '32px', marginBottom: '12px'}}>📄</div>
+
                 <input
                   type="file"
                   accept=".pdf"
@@ -311,9 +350,19 @@ function Chat({ user, onLogout }) {
                   style={{display: 'none'}}
                   id="pdf-upload"
                 />
-                <label htmlFor="pdf-upload" style={{cursor: 'pointer', color: '#7f77dd', fontSize: '14px', fontWeight: '600'}}>
+
+                <label
+                  htmlFor="pdf-upload"
+                  style={{
+                    cursor: 'pointer',
+                    color: '#7f77dd',
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}
+                >
                   Click to select a PDF
                 </label>
+
                 {uploadFile && (
                   <div style={{marginTop: '12px', color: '#aaa', fontSize: '13px'}}>
                     Selected: {uploadFile.name}
@@ -323,11 +372,23 @@ function Chat({ user, onLogout }) {
 
               {uploading && (
                 <div style={{marginBottom: '16px'}}>
-                  <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#aaa', marginBottom: '6px'}}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '13px',
+                    color: '#aaa',
+                    marginBottom: '6px'
+                  }}>
                     <span>{uploadStatus}</span>
                     <span>{uploadProgress}%</span>
                   </div>
-                  <div style={{height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden'}}>
+
+                  <div style={{
+                    height: '6px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '3px',
+                    overflow: 'hidden'
+                  }}>
                     <div style={{
                       height: '100%',
                       width: `${uploadProgress}%`,
@@ -345,9 +406,15 @@ function Chat({ user, onLogout }) {
                   borderRadius: '8px',
                   marginBottom: '16px',
                   fontSize: '13px',
-                  background: uploadStatus.includes('✅') ? 'rgba(99,153,34,0.1)' : 'rgba(228,75,74,0.1)',
-                  border: uploadStatus.includes('✅') ? '1px solid rgba(99,153,34,0.3)' : '1px solid rgba(228,75,74,0.3)',
-                  color: uploadStatus.includes('✅') ? '#97c459' : '#f09595'
+                  background: uploadStatus.includes('✅')
+                    ? 'rgba(99,153,34,0.1)'
+                    : 'rgba(228,75,74,0.1)',
+                  border: uploadStatus.includes('✅')
+                    ? '1px solid rgba(99,153,34,0.3)'
+                    : '1px solid rgba(228,75,74,0.3)',
+                  color: uploadStatus.includes('✅')
+                    ? '#97c459'
+                    : '#f09595'
                 }}>
                   {uploadStatus}
                 </div>
