@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
 
-const API_URL = process.env.REACT_KEY || 'http://localhost:8000';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 console.log('API URL:', API_URL);
 
 function Login({ onLogin }) {
