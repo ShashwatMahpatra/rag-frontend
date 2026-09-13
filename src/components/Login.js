@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Login.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+console.log('API URL:', API_URL);
 
 function Login({ onLogin }) {
   const [name, setName] = useState('');
