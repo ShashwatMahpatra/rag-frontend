@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Chat.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_URL = 'https://rag-backend-production-18a5.up.railway.app';
 
 function Chat({ user, onLogout }) {
   const [uploadFile, setUploadFile] = useState(null);
